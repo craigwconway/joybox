@@ -1,0 +1,6 @@
+RPi.GPIO
+spidev
+
+flask
+Flask-WTF
+Flask-Bootstrap4
