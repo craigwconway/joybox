@@ -4,15 +4,14 @@
 {% block styles %}
 {{ super() }}
 	<style>
-		body { background: #e8f1f9; }
+		body { background: #000000; }
+    text, a, p, label, h1, h2, h5 { color: #99ff95}
 	</style>
 {% endblock %}
-
 
 {% block title %}
 Joybox
 {% endblock %}
-
 
 {% block content %}
 
@@ -21,10 +20,16 @@ Joybox
     <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
 
       <h1 class="pt-5 pb-2">Catalog</h1>
-      
-      <p><a href="edit">Customize</a></p>
 
-      <p class="pt-5"><strong>{{ message }}</strong></p>
+      <p><a href="edit">New</a></p>
+
+      <p class="pt-5">
+        <ul>
+          {% for tag in tags %}
+            <li><a href="edit?tag={{tag}}">{{ tags[tag].name }}</a></li>
+          {% endfor %}
+        </ul>
+      </p>
 
 
     </div>

@@ -3,9 +3,10 @@
 
 {% block styles %}
 {{ super() }}
-	<style>
-		body { background: #e8f1f9; }
-	</style>
+<style>
+  body { background: #000000; }
+  text, a, p, label, h1, h2, h5 { color: #99ff95}
+</style>
 {% endblock %}
 
 
@@ -20,15 +21,23 @@ Joybox
   <div class="row">
     <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
 
-      <h1>Customize</h1>
+      <h1 class="pt-5 pb-2">Customize</h1>
 
-      <h3 class="pt-5 pb-2">Place the tag near the reader...</h3>
+      <p><a href="/">< Back to Catalog</a></p>
+
+      {% if not tag %}
+      <h5 class="pt-5 pb-2">Place the new piece near the reader...</h3>
+      {% endif %}
 
       {{ wtf.quick_form(form) }}
 
-      <p class="pt-5"><strong>{{ message }}</strong></p>
-
-      <p><a href="/">Home</a></p>
+      {% if tag %}
+      <p class="pt-5">
+        <a href="edit?tag={{tag}}&delete">
+          <button class="btn btn-danger">Delete</button>
+        </a>
+      </p>
+      {% endif %}
 
     </div>
   </div>
