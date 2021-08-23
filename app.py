@@ -58,7 +58,7 @@ def create_app():
         global t_reader
         t_reader.cancel()
 
-    def doStuff():
+    def initReader():
         global data_map
         global t_reader
         with t_lock:
@@ -67,29 +67,20 @@ def create_app():
             except:
                 pass
 
-        # Set the next thread to happen
-        t_reader = threading.Timer(POOL_TIME, doStuff, ())
+        t_reader = threading.Timer(POOL_TIME, initReader, ())
         t_reader.start()
 
-    def doStuffStart():
-        # Do initialisation stuff here
+    def start():
         global t_reader
-        # Create your thread
-        t_reader = threading.Timer(POOL_TIME, doStuff, ())
+        t_reader = threading.Timer(POOL_TIME, initReader, ())
         t_reader.start()
 
-    # Initiate
-    doStuffStart()
-    # When you kill Flask (SIGTERM), clear the trigger for the next thread
+    start()
     atexit.register(interrupt)
     return app
 
 
 app = create_app()
-
-#####
-####
-#####
 
 
 def download(video_url):
