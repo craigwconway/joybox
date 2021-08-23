@@ -33,6 +33,12 @@ Joybox
 
       {% if tag %}
       <p class="pt-5">
+        <a href="play?tag={{tag}}">
+          <button class="btn btn-success">Play</button>
+        </a>
+        <a href="stop?tag={{tag}}">
+          <button class="btn btn-info">Stop</button>
+        </a>
         <a href="edit?tag={{tag}}&delete">
           <button class="btn btn-danger">Delete</button>
         </a>
