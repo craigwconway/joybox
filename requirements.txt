@@ -4,3 +4,6 @@ spidev
 flask
 Flask-WTF
 Flask-Bootstrap4
+
+python-vlc
+youtube-dl
