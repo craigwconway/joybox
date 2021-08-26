@@ -5,6 +5,7 @@ import atexit
 import json
 import os.path
 import random
+import shutil
 import threading
 
 import vlc
@@ -83,8 +84,10 @@ def create_app():
 app = create_app()
 
 
-def download(video_url):
-    filename = slugify(video_url)
+def download(tag, url):
+    if not url:
+        return
+    filename = "downloads/" + tag + "/" + slugify(url)
     if not os.path.isfile(filename+".mp3"):
         ydl_opts = {
             'outtmpl': '%s.%s' % (filename, '%(etx)s'),
@@ -98,15 +101,24 @@ def download(video_url):
             }],
         }
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-            r = ydl.download([video_url])
+            r = ydl.download([url])
 
 
-@app.route('/', methods=['GET'])
+def play_tag(tag):
+    print("Playing: ", tag)
+    playlist = ["downloads/" + tag + "/" + slugify(url) + ".mp3" for url in get_data()
+                ["tags"][tag]["urls"]]
+    print("PLAYLIST: ", playlist)
+    player.set_media_list(vlc.MediaList(playlist))
+    player.play()
+
+
+@ app.route('/', methods=['GET'])
 def index():
     return render_template('index.html', tags=get_data()["tags"])
 
 
-@app.route('/edit', methods=['GET', 'POST'])
+@ app.route('/edit', methods=['GET', 'POST'])
 def edit():
     args = request.args
     data = get_data()
@@ -117,11 +129,17 @@ def edit():
         tag = args["tag"]
         form.id.data = tag
         form.name.data = tags[tag]["name"]
-        form.link.data = tags[tag]["link"]
+        form.repeat.data = tags[tag]["repeat"]
+        form.shuffle.data = tags[tag]["shuffle"]
+        urls_text = ""
+        for url in tags[tag]["urls"]:
+            urls_text = urls_text + url + "\r\n"
+        form.urls.data = urls_text
     if "delete" in args:
         tags.pop(tag, None)
         data["tags"] = tags
         write_data(data)
+        shutil.rmtree("downloads/" + tag)
         return redirect("/")
     if form.validate_on_submit():
         tag = form.id.data
@@ -130,8 +148,13 @@ def edit():
                 tag = reader.last_tag
             except:
                 tag = random.getrandbits(8)
-        download(form.link.data)
-        tags[tag] = {"name": form.name.data, "link": form.link.data}
+        urls = [url for url in form.urls.data.split("\r\n") if url != ""]
+        for url in urls:
+            download(tag, url)
+        tags[tag] = {"name": form.name.data,
+                     "urls": urls,
+                     "repeat": form.repeat.data,
+                     "shuffle": form.shuffle.data}
         data["tags"] = tags
         write_data(data)
         reader.tags = tags
@@ -139,18 +162,15 @@ def edit():
     return render_template('edit.html', form=form, tag=tag)
 
 
-@app.route('/play', methods=['GET'])
+@ app.route('/play', methods=['GET'])
 def play():
     tags = get_data()["tags"]
     tag = request.args["tag"]
-    print("Playing: ", tag)
-    player.set_media_list(vlc.MediaList(
-        [slugify(tags[tag]["link"])+".mp3"]))
-    player.play()
+    play_tag(tag)
     return redirect('/edit?tag=%s' % tag)
 
 
-@app.route('/stop', methods=['GET'])
+@ app.route('/stop', methods=['GET'])
 def stop():
     print("Stopping... ")
     player.stop()

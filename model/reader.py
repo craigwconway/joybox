@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+import random
 import re
 import unicodedata
 
@@ -48,8 +49,18 @@ class Reader():
                     try:
                         print("Found: %s (%s)" %
                               (self.tags[tag.hex()]["name"], tag.hex()))
-                        self.player.set_media_list(vlc.MediaList(
-                            [self.slugify(self.tags[tag.hex()]["link"])+".mp3"]))
+                        playlist = ["downloads/" + tag.hex() + "/" + self.slugify(url) +
+                                    ".mp3" for url in self.tags[tag.hex()]["urls"]]
+                        if self.tags[tag.hex()]["shuffle"]:
+                            random.shuffle(playlist)
+                        self.player.set_media_list(vlc.MediaList(playlist))
+                        if self.tags[tag.hex()]["repeat"]:
+                            self.player.set_playback_mode(
+                                vlc.PlaybackMode.loop)
+                        else:
+                            self.player.set_playback_mode(
+                                vlc.PlaybackMode.default)
+
                         self.player.play()
                         self.playing = True
                     except Exception as x:
