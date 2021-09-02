@@ -45,7 +45,7 @@ POOL_TIME = .5  # Seconds
 data_file = "data.json"
 player = vlc.MediaListPlayer()
 reader = Reader(player, get_data()["tags"])
-data_map = {"current_tag": None}
+data_map = {"current_tag": None, "tags": get_data()["tags"]}
 t_lock = threading.Lock()
 t_reader = threading.Thread()
 
@@ -67,7 +67,6 @@ def create_app():
                 reader.start()
             except:
                 pass
-
         t_reader = threading.Timer(POOL_TIME, initReader, ())
         t_reader.start()
 
@@ -106,8 +105,8 @@ def download(tag, url):
 
 def play_tag(tag):
     print("Playing: ", tag)
-    playlist = ["downloads/" + tag + "/" + slugify(url) + ".mp3" for url in get_data()
-                ["tags"][tag]["urls"]]
+    playlist = ["downloads/" + tag + "/" +
+                slugify(url) + ".mp3" for url in data_map["tags"][tag]["urls"]]
     print("PLAYLIST: ", playlist)
     player.set_media_list(vlc.MediaList(playlist))
     player.play()
@@ -115,15 +114,17 @@ def play_tag(tag):
 
 @ app.route('/', methods=['GET'])
 def index():
-    return render_template('index.html', tags=get_data()["tags"])
+    tags = {}
+    for tag in sorted(data_map["tags"].items(), key=lambda x: x[1]["name"]):
+        tags[tag[0]] = tag[1]
+    return render_template('index.html', tags=tags)
 
 
 @ app.route('/edit', methods=['GET', 'POST'])
 def edit():
     args = request.args
-    data = get_data()
     form = TagForm()
-    tags = data["tags"]
+    tags = data_map["tags"]
     tag = ""
     if "tag" in args and request.method == "GET":
         tag = args["tag"]
@@ -137,8 +138,9 @@ def edit():
         form.urls.data = urls_text
     if "delete" in args:
         tags.pop(tag, None)
-        data["tags"] = tags
-        write_data(data)
+        data_map["tags"] = tags
+        reader.tags = tags
+        write_data({"tags": tags})
         shutil.rmtree("downloads/" + tag)
         return redirect("/")
     if form.validate_on_submit():
@@ -155,16 +157,15 @@ def edit():
                      "urls": urls,
                      "repeat": form.repeat.data,
                      "shuffle": form.shuffle.data}
-        data["tags"] = tags
-        write_data(data)
+        write_data({"tags": tags})
         reader.tags = tags
+        data_map["tags"] = tags
         return redirect("/")
     return render_template('edit.html', form=form, tag=tag)
 
 
 @ app.route('/play', methods=['GET'])
 def play():
-    tags = get_data()["tags"]
     tag = request.args["tag"]
     play_tag(tag)
     return redirect('/edit?tag=%s' % tag)
@@ -172,6 +173,5 @@ def play():
 
 @ app.route('/stop', methods=['GET'])
 def stop():
-    print("Stopping... ")
     player.stop()
     return redirect('/edit?tag=%s' % request.args["tag"])
