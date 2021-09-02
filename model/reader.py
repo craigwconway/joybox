@@ -1,12 +1,12 @@
 from __future__ import unicode_literals
+from pn532 import *
+import vlc
 import random
 import re
 import unicodedata
 
 import RPi.GPIO as GPIO
-import vlc
-
-from pn532 import *
+GPIO.setwarnings(False)
 
 
 class Reader():
@@ -34,8 +34,7 @@ class Reader():
         try:
             pn532 = PN532_SPI(debug=False, reset=20, cs=4)
             ic, ver, rev, support = pn532.get_firmware_version()
-            print(
-                'Found PN532 with firmware version: {0}.{1}'.format(ver, rev))
+            print('Found PN532: {0}.{1}'.format(ver, rev))
             pn532.SAM_configuration()
             print('Starting reader...')
             while self.reading:
