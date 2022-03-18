@@ -1,6 +1,8 @@
-__pycache__/
+.DS_Store
+.vscode
+
 *.py[cod]
+
 venv/
-*.DS_Store
-settings.json
+
 downloads/*

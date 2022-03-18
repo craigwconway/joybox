@@ -1,14 +1,14 @@
-Toybox / Jukebox concept utilizing a PN532 NFC module to play audio files mapped to RFID tags.
+# Joybox - A jukebox concept utilizing a Raspberry Pi with PN532 NFC module to control music playback with small toys.
 
-Pre-requisites:
+## Pre-requisites
 
-- PN532 hardware
-- Python3 software
+ - RaspberryPi 3 or 4 controller board
+ - PN532 NFC HAT
+ - Python 3 
 
-Setup:
+## Installation
+ - Joybox project should be located at `/home/pi/joybox`
+ - The following script installs Joybox as a user service:`./install.sh`
 
-`pip3 install -r requirements.txt`
-
-Run:
-
-`export FLASK_APP=app.py;flask run --host=0.0.0.0`
+## Run
+ - Run without installation with `./start.sh`

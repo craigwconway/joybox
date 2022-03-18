@@ -1,10 +1,88 @@
 {
     "tags": {
-        "04e807ea716e84": {
-            "name": "Test",
-            "urls": ["https://www.youtube.com/watch?v=8i3iEcgPo6A"],
+        "0462a001a34103": {
+            "name": "Frozen Elsa",
+            "urls": ["https://youtu.be/JQmHVRFL2lw", "https://youtu.be/QnN6glKaWdE"],
+            "repeat": false,
+            "shuffle": true
+        },
+        "04629e01074103": {
+            "name": "Ariel",
+            "urls": ["https://youtu.be/3IOqRLR3Oug", "https://youtu.be/Fkusy4ylhiY", "https://youtu.be/TrRbB-qUJfY"],
             "repeat": true,
+            "shuffle": true
+        },
+        "04d906ea716e84": {
+            "name": "Puff the Magic Dragon",
+            "urls": ["https://youtu.be/cfgiLuoUtE0"],
+            "repeat": false,
             "shuffle": false
+        },
+        "041f08ea716e85": {
+            "name": "Gruffalo",
+            "urls": ["https://youtu.be/d2_1uvpHua4"],
+            "repeat": false,
+            "shuffle": false
+        },
+        "0462b201884103": {
+            "name": "Gruffalo's Child",
+            "urls": ["https://youtu.be/al5Gh2Dx5ck"],
+            "repeat": false,
+            "shuffle": false
+        },
+        "041c07ea716e85": {
+            "name": "Frozen Olaf",
+            "urls": ["https://youtu.be/ZPe71yr73Jk", "https://youtu.be/H-_Wx7VETxE", "https://youtu.be/xs78soKrXnE"],
+            "repeat": false,
+            "shuffle": true
+        },
+        "04e007ea716e84": {
+            "name": "The Cure",
+            "urls": ["https://youtu.be/Dt7oMSOB7nw", "https://youtu.be/JUKV1tm6X_Q", "https://youtu.be/7MdCPUjt5Ug", "https://youtu.be/d02UNBep0TI"],
+            "repeat": false,
+            "shuffle": true
+        },
+        "01234567": {
+            "repeat": false,
+            "name": "The Dude",
+            "urls": ["https://youtu.be/nzxz0M7Wws0", "https://youtu.be/xcp0PxLRhkg", "https://youtu.be/eczE9pAEHo4", "https://youtu.be/63Agrr2qC78", "https://youtu.be/MRlWbzdmJQA", "https://youtu.be/EbI0cMyyw_M", "https://youtu.be/2K_vBqmecV0", "https://youtu.be/1CriukwPkxI", "https://youtu.be/rcf0lx8AezY", "https://youtu.be/Aae_RHRptRg", "https://youtu.be/mHAGbD3dlhE", "https://youtu.be/Y2nQJo_KD1k", "https://youtu.be/At39RcRLTHE", "https://youtu.be/14xY1lxLMkI", "https://youtu.be/YlbRvLmPRMk"],
+            "shuffle": true
+        },
+        "0462b501b84103": {
+            "name": "Michael Jackson",
+            "urls": ["https://youtu.be/ftCalx6_pYA", "https://youtu.be/ElN_4vUvTPs", "https://youtu.be/1XMvPTFzgVU", "https://youtu.be/QtHRyy5LODE", "https://youtu.be/2mbLpSquq84"],
+            "repeat": false,
+            "shuffle": true
+        },
+        "04a507ea716e84": {
+            "name": "Darth Vader",
+            "urls": ["https://youtu.be/s3SZ5sIMY6o"],
+            "repeat": false,
+            "shuffle": false
+        },
+        "04f508ea716e84": {
+            "name": "Lego",
+            "urls": ["https://m.youtube.com/watch?v=U6Mpipp-KgQ"],
+            "repeat": false,
+            "shuffle": false
+        },
+        "04e508ea716e84": {
+            "name": "Tree Frog House Mix",
+            "urls": ["https://soundcloud.com/thomasjackmusic/thomas-jack-presents-tropical-house-vol6-with-kygo", "https://www.mixcloud.com/martinsmith370515/tropical-house-mixed-by-thomas-jack/"],
+            "repeat": false,
+            "shuffle": true
+        },
+        "04629b019e4103": {
+            "name": "Celtic Man",
+            "urls": ["https://youtu.be/djV11Xbc914", "https://youtu.be/kK7L9B2acjs", "https://youtu.be/SPth9329nmE"],
+            "repeat": true,
+            "shuffle": true
+        },
+        "040c07ea716e85": {
+            "name": "Frozen Anna",
+            "urls": ["https://youtu.be/TeQ_TTyLGMs", "https://youtu.be/ZrX1XKtShSI", "https://youtu.be/nVW9QOIeqQg", "https://youtu.be/TuC_-7vy_F0"],
+            "repeat": false,
+            "shuffle": true
         }
     }
 }
