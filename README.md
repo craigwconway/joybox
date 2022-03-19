@@ -1,10 +1,15 @@
-# Joybox - A jukebox concept utilizing a Raspberry Pi with PN532 NFC module to control music playback with small toys.
+# Joybox 
+A digital jukebox concept utilizing small toys to control music selection and playback
 
 ## Pre-requisites
 
- - RaspberryPi 3 or 4 controller board
- - PN532 NFC HAT
+ - RaspberryPi 3 or 4, or compatible
+ - PN532 module
  - Python 3 
+
+ ## Configuration
+  - Configure the pins on the NFC HAT to use `spi`
+  - Use `raspi-config` to configure the pi for `i2c`
 
 ## Installation
  - Joybox project should be located at `/home/pi/joybox`
