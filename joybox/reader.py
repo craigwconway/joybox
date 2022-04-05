@@ -15,9 +15,9 @@ class Reader:
     TIMEOUT = 1  # seconds
     DEFAULT = "downloads/default/endline.wav"
 
-    def __init__(self, player, joycon_map) -> None:
+    def __init__(self, player, playlist_map) -> None:
         self.player = player
-        self.joycon_map = joycon_map
+        self.playlist_map = playlist_map
         self.playing = False
         self.reading = True
         self.last_tag = None
@@ -35,28 +35,27 @@ class Reader:
                     self.player.stop()
                     self.playing = False
                     continue
-                self.last_tag = tag.hex()
+                self.last_tag = str(tag.hex())
                 if not self.playing:
+                    print(f"looking for match: {self.last_tag}")
                     try:
-                        joycon = self.joycon_map[self.last_tag]
-                        print(f"Found: {joycon.name}")
-                        playlist = [s.local_path for s in joycon.sounds]
-                        if joycon.shuffle:
+                        joycon = self.playlist_map[self.last_tag]
+                        print(f"Found: {joycon['name']}")
+                        playlist = joycon["playlist"]
+                        if joycon["shuffle"]:
                             random.shuffle(playlist)
                         self.player.set_media_list(vlc.MediaList(playlist))
-                        if joycon.repeat:
+                        if joycon["repeat"]:
                             self.player.set_playback_mode(vlc.PlaybackMode.loop)
                         else:
                             self.player.set_playback_mode(vlc.PlaybackMode.default)
                         self.player.play()
                         self.playing = True
                     except Exception as x:
-                        try:
-                            self.player.set_media_list(vlc.MediaList([self.DEFAULT]))
-                            self.player.play()
-                            self.playing = True
-                        except:
-                            pass
+                        print(x)
+                        self.player.set_media_list(vlc.MediaList([self.DEFAULT]))
+                        self.player.play()
+                        self.playing = False
 
         except Exception as e:
             print(e)

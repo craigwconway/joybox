@@ -17,12 +17,23 @@ POLL_INTERVAL = 0.5  # half a second
 data_file = "data.json"  # TODO remove
 data_map = {"current_tag": None, "tags": get_data("data.json")["tags"]}  # TODO remove
 player = vlc.MediaListPlayer()
-reader = None
+reader = Reader(player, {})
 t_lock = threading.Lock()
 t_reader = threading.Thread()
 
 
 db = SQLAlchemy()
+
+
+def map_playlists(joycons):
+    playlist_map = {}
+    for joycon in joycons:
+        playlist_map[joycon.id] = {}
+        playlist_map[joycon.id]["name"] = joycon.name
+        playlist_map[joycon.id]["playlist"] = [s.local_path for s in joycon.sounds]
+        playlist_map[joycon.id]["repeat"] = joycon.repeat
+        playlist_map[joycon.id]["shuffle"] = joycon.shuffle
+    return playlist_map
 
 
 def create_app():
@@ -38,7 +49,7 @@ def create_app():
     db.init_app(app)
     db.create_all()
 
-    reader = Reader(player, {joycon.id: joycon for joycon in Joycon.query.all()})
+    reader.playlist_map = map_playlists(Joycon.query.all())
 
     def interrupt():
         global t_reader
@@ -118,7 +129,7 @@ def delete_joycon():
             pass
     db.session.delete(joycon)
     db.session.commit()
-    reader.joycon_map = {joycon.id: joycon for joycon in Joycon.query.all()}
+    reader.playlist_map = map_playlists(Joycon.query.all())
     return redirect("/")
 
 
@@ -139,7 +150,7 @@ def delete_sound():
         order = order + 1
         db.session.merge(sound)
         db.session.commit()
-    reader.joycon_map = {joycon.id: joycon for joycon in Joycon.query.all()}
+    reader.playlist_map = map_playlists(Joycon.query.all())
     return redirect(f"/edit?jid={joycon_id}")
 
 
@@ -155,7 +166,7 @@ def order_up():
         sound.order = sound.order + 1
         db.session.merge(sound)
         db.session.commit()
-    reader.joycon_map = {joycon.id: joycon for joycon in Joycon.query.all()}
+    reader.playlist_map = map_playlists(Joycon.query.all())
     return redirect(f"/edit?jid={sound.joycon_id}")
 
 
@@ -171,7 +182,7 @@ def order_down():
         sound.order = sound.order - 1
         db.session.merge(sound)
         db.session.commit()
-    reader.joycon_map = {joycon.id: joycon for joycon in Joycon.query.all()}
+    reader.playlist_map = map_playlists(Joycon.query.all())
     return redirect(f"/edit?jid={sound.joycon_id}")
 
 
@@ -194,7 +205,7 @@ async def download_sounds():
             asyncio.create_task(download(sound))
         except:
             print("download error")
-        reader.joycon_map = {joycon.id: joycon for joycon in Joycon.query.all()}
+        reader.playlist_map = map_playlists(Joycon.query.all())
     return redirect(f"/edit?jid={sound.joycon_id}")
 
 
@@ -217,7 +228,7 @@ def upload_sounds():
             sound.name = get_name_from_metadata(filename)
             db.session.merge(sound)
             db.session.commit()
-        reader.joycon_map = {joycon.id: joycon for joycon in Joycon.query.all()}
+        reader.playlist_map = map_playlists(Joycon.query.all())
     return redirect(f"/edit?jid={jid}")
 
 
@@ -240,11 +251,15 @@ async def edit():
                 pass
         joycon.id = jid
         joycon.name = request.form.get("name")
-        joycon.repeat = request.form.get("repeat")
-        joycon.shuffle = request.form.get("shuffle")
+        joycon.repeat = (
+            bool(request.form.get("repeat")) if request.form.get("repeat") else False
+        )
+        joycon.shuffle = (
+            bool(request.form.get("shuffle")) if request.form.get("shuffle") else False
+        )
         db.session.merge(joycon)
         db.session.commit()
-        reader.joycon_map = {joycon.id: joycon for joycon in Joycon.query.all()}
+        reader.playlist_map = map_playlists(Joycon.query.all())
         return redirect("/")
     return render_template("edit.html", joycon=joycon)
 
