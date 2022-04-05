@@ -9,7 +9,7 @@ A digital jukebox concept utilizing small toys to control music selection and pl
 
  ## Configuration
   - Configure the pins on the NFC HAT to use `spi`
-  - Use `raspi-config` to configure the pi for `i2c`
+  - Use the `raspi-config` utility to enable `spi` under Peripherals
 
 ## Installation
  - Joybox project should be located at `/home/pi/joybox`

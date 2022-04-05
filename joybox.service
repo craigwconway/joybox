@@ -2,7 +2,7 @@
 Description=Joybox
 
 [Service]
-ExecStart=/home/pi/joybox/joybox.sh
+ExecStart=/home/pi/joybox/start.sh
 
 [Install]
 WantedBy=default.target

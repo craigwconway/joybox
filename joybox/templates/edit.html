@@ -1,0 +1,99 @@
+<html>
+
+<head>
+  <style>
+    body {
+      background: #000000;
+    }
+
+    input {
+      background: #fff;
+    }
+
+    text,
+    a,
+    p,
+    label,
+    li,
+    h1,
+    h2,
+    h5 {
+      color: #99ff95
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
+
+        <p> <a href="/"> &lt; Back</a> </p>
+
+        {% if not joycon %}
+        <h1 class="pt-5 pb-2">Put new piece on Joybox, <br>give it a name, then click Save</h1>
+        {% endif %}
+
+        <form method="post" action="/edit">
+          <input type="hidden" name="id" value="{{ joycon.id }}">
+
+          {% if joycon %}
+          <a href="previous?jid={{joycon.id}}">Previous</a>
+          <a href="play?jid={{joycon.id}}">Play</a>
+          <a href="stop?jid={{joycon.id}}">Stop</a>
+          <a href="next?jid={{joycon.id}}">Next</a><label>Repeat</label> <input type="checkbox" name="repeat"
+            value="{{joycon.repeat}}">
+          <label>Shuffle</label> <input type="checkbox" name="shuffle" value="{{joycon.shuffle}}">
+          <br>
+          {% endif %}
+          <label>Name</label> <input type="text" name="name" value="{{ joycon.name }}">
+
+          <input type="submit" value="Save">
+        </form>
+        <ol>
+          {% for sound in joycon.sounds %}
+          <li>
+            [<a href="playSound?sid={{sound.id}}">&gt;</a>]
+            [<a href="orderUp?sid={{sound.id}}">+</a>]
+            [<a href="orderDown?sid={{sound.id}}">-</a>]
+            [<a href="deleteSound?sid={{sound.id}}">x</a>]
+            {{ sound.name[:60] }}
+          </li>
+          {% endfor %}
+        </ol>
+
+        {% if joycon.id %}
+
+        <p>Download link from YouTube, Mixcloud, Vimeo...</p>
+
+        <form method="post" enctype="multipart/form-data" action="/download">
+          <input type="hidden" name="jid" value="{{ joycon.id }}">
+          <input type="text" name="url" style="width: 250px">
+          <input type="submit" value="Download">
+        </form>
+
+        <p>Upload from Computer:</p>
+
+        <form method="post" enctype="multipart/form-data" action="/upload">
+          <input type="hidden" name="jid" value="{{ joycon.id }}">
+          <input type="file" name="files" multiple="">
+          <input type="submit" value="Upload">
+        </form>
+
+        <p style="padding-top:20px;">
+          <form method="post" action="/deleteJoycon">
+            <input type="hidden" name="jid" value="{{ joycon.id }}">
+            <input type="submit" value="Delete">
+          </form>
+        </p>
+
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>

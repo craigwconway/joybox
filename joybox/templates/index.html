@@ -1,0 +1,46 @@
+<html>
+
+<head>
+  <style>
+    body {
+      background: #000000;
+    }
+
+    text,
+    a,
+    p,
+    label,
+    h1,
+    h2,
+    h5 {
+      color: #99ff95
+    }
+  </style>
+  <title>Joybox</title>
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
+
+        <h1 class="pt-5 pb-2">Joybox</h1>
+
+        <p><a href="edit">New</a></p>
+
+        <p class="pt-5">
+          <ul>
+            {% for j in joycons %}
+            <li><a href="edit?jid={{j.id}}">{{ j.name }}</a></li>
+            {% endfor %}
+          </ul>
+        </p>
+
+
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
