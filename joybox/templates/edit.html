@@ -42,9 +42,11 @@
           <a href="previous?jid={{joycon.id}}">Previous</a>
           <a href="play?jid={{joycon.id}}">Play</a>
           <a href="stop?jid={{joycon.id}}">Stop</a>
-          <a href="next?jid={{joycon.id}}">Next</a><label>Repeat</label> <input type="checkbox" name="repeat"
-            value="{{joycon.repeat}}">
-          <label>Shuffle</label> <input type="checkbox" name="shuffle" value="{{joycon.shuffle}}">
+          <a href="next?jid={{joycon.id}}">Next</a>
+          <label>Repeat</label>
+          <input type="checkbox" name="repeat" value="True" {% if joycon.repeat %} checked {% endif %}>
+          <label>Shuffle</label>
+          <input type="checkbox" name="shuffle" value="True" {% if joycon.shuffle %} checked {% endif %}>
           <br>
           {% endif %}
           <label>Name</label> <input type="text" name="name" value="{{ joycon.name }}">
