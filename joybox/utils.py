@@ -49,16 +49,16 @@ def get_name_from_url(url):
 
 
 def get_name_from_metadata(filepath):
-    if filepath[-4:] == ".mp3":
-        metadata = eyed3.load(filepath).tag
-        name = None
-        if metadata.artist:
-            name = metadata.artist
-        if metadata.title:
-            name = f"{name} - {metadata.title}"
-        if not name:
-            name = "Unknown"
-    return name
+    try:
+        if filepath[-4:] == ".mp3":
+            metadata = eyed3.load(filepath).tag
+            if metadata.title and metadata.artist:
+                return f"{metadata.title} - {metadata.artist}"
+            if metadata.title:
+                return metadata.title
+    except:
+        pass
+    return filepath.split("/")[-1:][0]
 
 
 def slugify(value, allow_unicode=False):

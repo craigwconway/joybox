@@ -120,7 +120,7 @@ def index():
 @app.route("/deleteJoycon", methods=["POST"])
 def delete_joycon():
     joycon = Joycon.query.get(request.form.get("jid"))
-    reader.joycon_map.pop(joycon.id)
+    reader.playlist_map.pop(joycon.id)
     sounds = joycon.sounds
     for sound in sounds:
         try:
@@ -217,6 +217,8 @@ def upload_sounds():
         joycon = Joycon.query.get(jid)
         order = len(joycon.sounds)
         for file in files:
+            if not os.path.exists(os.path.join("downloads", jid)):
+                os.mkdir(os.path.join("downloads", jid))
             filename = os.path.join("downloads", jid, file.filename)
             print(filename)
             file.save(filename)

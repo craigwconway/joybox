@@ -52,10 +52,9 @@ class Reader:
                         self.player.play()
                         self.playing = True
                     except Exception as x:
-                        print(x)
                         self.player.set_media_list(vlc.MediaList([self.DEFAULT]))
                         self.player.play()
-                        self.playing = False
+                        self.playing = True
 
         except Exception as e:
             print(e)
