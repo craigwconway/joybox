@@ -1,19 +1,21 @@
 # Joybox 
-A digital jukebox concept utilizing small toys to control music selection and playback
+A physical jukebox concept utilizing small toys to control music selection and playback
+![Joybox demo](/assets/joybox.jpg)
 
-## Pre-requisites
+## Hardware
+ - RaspberryPi 4, SD card, power supply
+ - PN532 module with pins configured to use `spi`
+ - Speaker (wired or Bluetooth)
+ - RFID tags (~$20 for 50 on Amazon)
+ - Assorted small toys
 
- - RaspberryPi 3 or 4, or compatible
- - PN532 module
- - Python 3 
+## Setup
+ - Use the `raspi-config` utility to enable `spi` under Peripherals
+ - Clone the Joybox project at `/home/pi/joybox`
+ - Install as a user service: `install.sh`
+ - Run without installation: `start.sh`
 
- ## Configuration
-  - Configure the pins on the NFC HAT to use `spi`
-  - Use the `raspi-config` utility to enable `spi` under Peripherals
-
-## Installation
- - Joybox project should be located at `/home/pi/joybox`
- - The following script installs Joybox as a user service:`./install.sh`
-
-## Run
- - Run without installation with `./start.sh`
+## App
+ - Open the webapp at `http://raspberrypi.local:8050/` 
+ - Associate RFID tags to YouTube and Spotify playlists
+ - Control playback
